@@ -11,6 +11,8 @@ import {
   selector: 'datatable-body-row',
   template: `
     <div
+      role="row"
+      [attr.aria-selected]="isSelected"
       *ngFor="let colGroup of columnsByPin; let i = index; trackBy: trackByGroups"
       class="datatable-row-{{colGroup.type}} datatable-row-group"
       [ngStyle]="stylesByGroup(colGroup.type)">
@@ -97,9 +99,9 @@ export class DataTableBodyRowComponent {
       width: `${widths[group]}px`
     };
 
-    if(group === 'left') {
+    if (group === 'left') {
       translateXY(styles, offsetX, 0);
-    } else if(group === 'right') {
+    } else if (group === 'right') {
       const bodyWidth = parseInt(this.innerWidth + '', 0);
       const totalDiff = widths.total - bodyWidth;
       const offsetDiff = totalDiff - offsetX;
@@ -128,7 +130,7 @@ export class DataTableBodyRowComponent {
       keyCode === Keys.left ||
       keyCode === Keys.right;
 
-    if(isAction && isTargetRow) {
+    if (isAction && isTargetRow) {
       event.preventDefault();
       event.stopPropagation();
 

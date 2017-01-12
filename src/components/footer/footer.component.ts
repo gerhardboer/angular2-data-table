@@ -6,6 +6,7 @@ import {
   selector: 'datatable-footer',
   template: `
     <div
+      role="row"
       [ngClass]="{'selected-count': selectedMessage}"
       [style.height.px]="footerHeight">
       <div class="page-count">

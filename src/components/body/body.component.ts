@@ -9,6 +9,7 @@ import { ScrollerComponent } from './scroller.component';
   selector: 'datatable-body',
   template: `
     <datatable-selection
+      role="row"
       #selector
       [selected]="selected"
       [rows]="temp"

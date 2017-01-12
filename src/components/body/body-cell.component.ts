@@ -9,13 +9,15 @@ import { SortDirection } from '../../types';
 @Component({
   selector: 'datatable-body-cell',
   template: `
-    <div class="datatable-body-cell-label">
+    <div class="datatable-body-cell-label"
+         role="gridcell">
       <label
         *ngIf="column.checkboxable" 
         class="datatable-checkbox">
         <input 
           type="checkbox"
           [checked]="isSelected"
+          [attr.aria-checked]="isSelected"
           (click)="onCheckboxChange($event)" 
         />
       </label>

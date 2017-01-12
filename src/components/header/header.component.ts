@@ -12,7 +12,8 @@ import { DataTableColumnDirective } from '../columns';
       orderable
       (reorder)="onColumnReordered($event)"
       [style.width.px]="columnGroupWidths.total"
-      class="datatable-header-inner">
+      class="datatable-header-inner"
+      role="row">
       <div
         *ngFor="let colGroup of columnsByPin; trackBy: trackByGroups"
         [class]="'datatable-row-' + colGroup.type"

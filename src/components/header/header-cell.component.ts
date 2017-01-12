@@ -8,7 +8,7 @@ import { nextSortDir } from '../../utils';
 @Component({
   selector: 'datatable-header-cell',
   template: `
-    <div>
+    <div role="columnheader">
       <label
         *ngIf="isCheckboxable" 
         class="datatable-checkbox">
@@ -20,6 +20,7 @@ import { nextSortDir } from '../../utils';
       </label>
       <span class="datatable-header-cell-wrapper">
         <span
+          role="gridcell"
           class="datatable-header-cell-label draggable"
           *ngIf="!column.headerTemplate"
           (click)="onSort()"
@@ -103,7 +104,7 @@ export class DataTableHeaderCellComponent {
   }
 
   get isCheckboxable(): boolean {
-    return this.column.checkboxable && 
+    return this.column.checkboxable &&
       this.column.headerCheckboxable && 
       this.selectionType === SelectionType.checkbox;
   }

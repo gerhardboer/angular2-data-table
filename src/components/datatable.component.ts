@@ -18,10 +18,14 @@ import { DatatableRowDetailDirective } from './row-detail';
   selector: 'ngx-datatable',
   template: `
     <div
+      role="grid"
       visibility-observer
+      [attr.aria-multiselectable]="isMultiSelection || isMultiClickSelection"
       (visible)="recalculate()">
       <datatable-header
         *ngIf="headerHeight"
+        role="rowgroup"
+        aria-label="header"
         [sorts]="sorts"
         [sortType]="sortType"
         [scrollbarH]="scrollbarH"
@@ -40,6 +44,8 @@ import { DatatableRowDetailDirective } from './row-detail';
         (select)="onHeaderSelect($event)">
       </datatable-header>
       <datatable-body
+       role="rowgroup"
+        aria-label="body"
         [rows]="rows"
         [scrollbarV]="scrollbarV"
         [scrollbarH]="scrollbarH"
@@ -66,6 +72,8 @@ import { DatatableRowDetailDirective } from './row-detail';
         (scroll)="onBodyScroll($event)">
       </datatable-body>
       <datatable-footer
+       role="rowgroup"
+        aria-label="footer"
         *ngIf="footerHeight"
         [rowCount]="rowCount"
         [pageSize]="pageSize"

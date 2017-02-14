@@ -10,6 +10,7 @@ import {DataTableColumnDirective} from '../columns';
   template: `
     <div
       orderable
+      role="columnheader"
       (reorder)="onColumnReordered($event)"
       [style.width.px]="columnGroupWidths.total"
       class="datatable-header-inner">
@@ -20,12 +21,14 @@ import {DataTableColumnDirective} from '../columns';
         <datatable-header-cell
           *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
           [aria]="aria.sorts"
+          [attr.aria-colindex]="column.colIndex"
+          [attr.aria-labelledby]="'datatable-header-cell-' + column.colIndex"
           resizeable
           [resizeEnabled]="column.resizeable"
           (resize)="onColumnResized($event, column)"
           long-press
           (longPress)="drag = true"
-          (longPressEnd)="drag = false"
+          (longPressEnd)="drag = false" 
           draggable
           [dragX]="reorderable && column.draggable && drag"
           [dragY]="false"
@@ -106,7 +109,7 @@ export class DataTableHeaderComponent {
     return '100%';
   }
 
-  trackByGroups(index: number, colGroup: any): any {
+    trackByGroups(index: number, colGroup: any): any {
     return colGroup.type;
   }
 

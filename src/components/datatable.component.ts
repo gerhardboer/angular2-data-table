@@ -28,8 +28,8 @@ import {DatatableRowDetailDirective} from './row-detail';
       (visible)="recalculate()">
       <datatable-header
         *ngIf="headerHeight"
-        aria-label="header"
         [aria]="aria.header"
+        [attr.aria-label]="aria.headerLabel"
         [sorts]="sorts"
         [sortType]="sortType"
         [scrollbarH]="scrollbarH"
@@ -48,7 +48,6 @@ import {DatatableRowDetailDirective} from './row-detail';
         (select)="onHeaderSelect($event)">
       </datatable-header>
       <datatable-body
-        aria-label="body"
         [rows]="rows"
         [scrollbarV]="scrollbarV"
         [scrollbarH]="scrollbarH"
@@ -75,8 +74,6 @@ import {DatatableRowDetailDirective} from './row-detail';
         (scroll)="onBodyScroll($event)">
       </datatable-body>
       <datatable-footer
-        role="rowgroup"
-        aria-label="footer"
         *ngIf="footerHeight"
         [rowCount]="rowCount"
         [pageSize]="pageSize"
@@ -394,6 +391,7 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    */
   @Input() aria: any = {
     tableName: 'ngx-datatable',
+    headerLabel: 'table header',
     header: {
       sorts: {
         asc: 'asc',
@@ -981,11 +979,12 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
       return Object.assign({}, c);
     });
 
-    console.trace();
-    console.log(' ')
     cols.splice(prevValue, 1);
     cols.splice(newValue, 0, column);
-    this.columns = cols;
+
+    this.columns = cols.map((c, i) => {
+      return Object.assign({}, c, {colIndex: i});
+    });
 
     this.reorder.emit({
       column,

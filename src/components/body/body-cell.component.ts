@@ -10,7 +10,8 @@ import { SortDirection } from '../../types';
   selector: 'datatable-body-cell',
   template: `
     <div class="datatable-body-cell-label"
-         role="gridcell">
+         role="gridcell"
+         [attr.aria-colindex]="column.colIndex">
       <label
         *ngIf="column.checkboxable" 
         class="datatable-checkbox">

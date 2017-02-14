@@ -11,7 +11,11 @@ import { camelCase, deCamelCase, id } from '../utils';
 export function setColumnDefaults(columns: any[]) {
   if(!columns) return;
 
-  for(let column of columns) {
+  for(let i = 0; i < columns.length; i++) {
+    let column = columns[i];
+
+    column.colIndex = i;
+
     if(!column.$$id) {
       column.$$id = id();
     }

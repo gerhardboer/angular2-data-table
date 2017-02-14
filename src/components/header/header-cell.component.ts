@@ -8,8 +8,7 @@ import {nextSortDir} from '../../utils';
 @Component({
   selector: 'datatable-header-cell',
   template: `
-    <div role="columnheader"
-         [attr.aria-sort]="ariaSortDir">
+    <div [attr.aria-sort]="ariaSortDir">
       <label
         *ngIf="isCheckboxable"
         class="datatable-checkbox">
@@ -22,6 +21,7 @@ import {nextSortDir} from '../../utils';
       <span class="datatable-header-cell-wrapper">
         <span
           role="gridcell"
+          [id]="'datatable-header-cell-'+column.colIndex"
           class="datatable-header-cell-label draggable"
           *ngIf="!column.headerTemplate"
           (click)="onSort()"
@@ -52,7 +52,7 @@ export class DataTableHeaderCellComponent {
   @Input() allRowsSelected: boolean;
   @Input() selectionType: SelectionType;
 
-  @Input() aria: { [key: string]: string };
+  @Input() aria: any;
   ariaSortDir: SortDirection;
 
   @HostBinding('style.height.px')
@@ -82,7 +82,7 @@ export class DataTableHeaderCellComponent {
     const sortDir = this.sortDir;
     if (sortDir) {
       cls += ` sort-active sort-${sortDir}`;
-      this.ariaSortDir = this.aria[sortDir]
+      this.ariaSortDir = this.aria[sortDir] || SortDirection.none
     }
 
     return cls;

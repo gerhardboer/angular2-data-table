@@ -9,6 +9,9 @@ export interface TableColumn {
   // unique id
   $$id?: string;
 
+  // current index of the column for aria
+  colIndex?: number;
+
   // used internally for resize calcs
   $$oldWidth?: number;
 

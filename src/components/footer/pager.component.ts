@@ -9,6 +9,7 @@ import {
       <li [class.disabled]="!canPrevious()">
         <a
           href="javascript:void(0)"
+          [attr.aria-label]="aria.first"
           (click)="selectPage(1)">
           <i class="{{pagerPreviousIcon}}"></i>
         </a>
@@ -16,6 +17,7 @@ import {
       <li [class.disabled]="!canPrevious()">
         <a
           href="javascript:void(0)"
+          [attr.aria-label]="aria.previous"
           (click)="prevPage()">
           <i class="{{pagerLeftArrowIcon}}"></i>
         </a>
@@ -26,6 +28,7 @@ import {
         [class.active]="pg.number === page">
         <a
           href="javascript:void(0)"
+          [attr.aria-label]="pg.number"
           (click)="selectPage(pg.number)">
           {{pg.text}}
         </a>
@@ -33,6 +36,7 @@ import {
       <li [class.disabled]="!canNext()">
         <a
           href="javascript:void(0)"
+          [attr.aria-label]="aria.next"
           (click)="nextPage()">
           <i class="{{pagerRightArrowIcon}}"></i>
         </a>
@@ -40,6 +44,7 @@ import {
       <li [class.disabled]="!canNext()">
         <a
           href="javascript:void(0)"
+          [attr.aria-label]="aria.last"
           (click)="selectPage(totalPages)">
           <i class="{{pagerNextIcon}}"></i>
         </a>
@@ -57,6 +62,7 @@ export class DataTablePagerComponent {
   @Input() pagerRightArrowIcon: string;
   @Input() pagerPreviousIcon: string;
   @Input() pagerNextIcon: string;
+  @Input() aria: { [key: string]: string };
 
   @Input()
   set size(val: number) {

@@ -25,6 +25,7 @@ import {
         [size]="pageSize"
         [count]="rowCount"
         [hidden]="!isVisible"
+        [aria]="aria.pager"
         (change)="page.emit($event)">
       </datatable-pager>
     </div>
@@ -48,6 +49,8 @@ export class DataTableFooterComponent {
 
   @Input() selectedCount: number;
   @Input() selectedMessage: string | boolean;
+
+  @Input() aria: { [key: string]: string };
 
   @Output() page: EventEmitter<any> = new EventEmitter();
 

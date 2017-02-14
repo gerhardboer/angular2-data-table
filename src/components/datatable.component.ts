@@ -79,6 +79,7 @@ import { DatatableRowDetailDirective } from './row-detail';
         [pageSize]="pageSize"
         [offset]="offset"
         [footerHeight]="footerHeight"
+        [aria]="aria.footer"
         [totalMessage]="messages.totalMessage"
         [pagerLeftArrowIcon]="cssClasses.pagerLeftArrow"
         [pagerRightArrowIcon]="cssClasses.pagerRightArrow"
@@ -132,7 +133,7 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    * @memberOf DatatableComponent
    */
   @Input() set columns(val: any[]) {
-    if(val) {
+    if (val) {
       setColumnDefaults(val);
       this.recalculateColumns(val);
     }
@@ -363,6 +364,30 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
     selectedMessage: 'selected'
   };
 
+  /**
+   * Aria labels overrides for localization
+   * footer: {
+   *   pager: {
+   *     first: 'first',
+   *     previous: 'previous',
+   *     next: 'next',
+   *     last: 'last'
+   *   }
+   * }
+   *
+   * @type {*}
+   * @memberOf DatatableComponent
+   */
+  @Input() aria: any = {
+    footer: {
+      pager: {
+        first: 'first',
+        previous: 'previous',
+        next: 'next',
+        last: 'last'
+      }
+    }
+  };
   /**
    * This will be used when displaying or selecting rows.
    * when tracking/comparing them, we'll use the value of this fn,
@@ -933,6 +958,8 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
       return Object.assign({}, c);
     });
 
+    console.trace();
+    console.log(' ')
     cols.splice(prevValue, 1);
     cols.splice(newValue, 0, column);
     this.columns = cols;

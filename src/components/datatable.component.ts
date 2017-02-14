@@ -370,12 +370,22 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
 
   /**
    * Aria labels overrides for localization
-   * footer: {
-   *   pager: {
-   *     first: 'first',
-   *     previous: 'previous',
-   *     next: 'next',
-   *     last: 'last'
+   * {
+   *   tableName: 'datatable',
+   *   header: {
+   *     sorts: {
+   *       asc: 'asc',
+   *       desc: 'desc',
+   *     }
+   *   },
+   *   footer: {
+   *     pager: {
+   *       first: 'first',
+   *       previous: 'previous',
+   *       page: 'page',
+   *       next: 'next',
+   *       last: 'last'
+   *     }
    *   }
    * }
    *
@@ -383,7 +393,7 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    * @memberOf DatatableComponent
    */
   @Input() aria: any = {
-    tableName: 'datatable',
+    tableName: 'ngx-datatable',
     header: {
       sorts: {
         asc: 'asc',

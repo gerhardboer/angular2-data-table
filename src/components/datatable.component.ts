@@ -9,23 +9,27 @@ import {
   forceFillColumnWidths, adjustColumnWidths, sortRows, scrollbarWidth,
   setColumnDefaults, throttleable, translateTemplates
 } from '../utils';
-import { ColumnMode, SortType, SelectionType } from '../types';
-import { DataTableBodyComponent } from './body';
-import { DataTableColumnDirective } from './columns';
-import { DatatableRowDetailDirective } from './row-detail';
+import {ColumnMode, SortType, SelectionType} from '../types';
+import {DataTableBodyComponent} from './body';
+import {DataTableColumnDirective} from './columns';
+import {DatatableRowDetailDirective} from './row-detail';
 
 @Component({
   selector: 'ngx-datatable',
   template: `
+    <span [id]="aria.tableName" style="display:none" aria-hidden="true">{{aria.tableName}}</span>
     <div
       role="grid"
-      visibility-observer
+      [attr.aria-labelledby]="aria.tableName"
       [attr.aria-multiselectable]="isMultiSelection || isMultiClickSelection"
+      [attr.aria-rowcount]="rowCount"
+      [attr.aria-colcount]="columnCount"
+      visibility-observer
       (visible)="recalculate()">
       <datatable-header
         *ngIf="headerHeight"
-        role="rowgroup"
         aria-label="header"
+        [aria]="aria.header"
         [sorts]="sorts"
         [sortType]="sortType"
         [scrollbarH]="scrollbarH"
@@ -44,7 +48,6 @@ import { DatatableRowDetailDirective } from './row-detail';
         (select)="onHeaderSelect($event)">
       </datatable-header>
       <datatable-body
-       role="rowgroup"
         aria-label="body"
         [rows]="rows"
         [scrollbarV]="scrollbarV"
@@ -72,7 +75,7 @@ import { DatatableRowDetailDirective } from './row-detail';
         (scroll)="onBodyScroll($event)">
       </datatable-body>
       <datatable-footer
-       role="rowgroup"
+        role="rowgroup"
         aria-label="footer"
         *ngIf="footerHeight"
         [rowCount]="rowCount"
@@ -136,6 +139,7 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
     if (val) {
       setColumnDefaults(val);
       this.recalculateColumns(val);
+      this.columnCount = val.length;
     }
 
     this._columns = val;
@@ -379,10 +383,18 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
    * @memberOf DatatableComponent
    */
   @Input() aria: any = {
+    tableName: 'datatable',
+    header: {
+      sorts: {
+        asc: 'asc',
+        desc: 'desc',
+      }
+    },
     footer: {
       pager: {
         first: 'first',
         previous: 'previous',
+        page: 'page',
         next: 'next',
         last: 'last'
       }
@@ -679,7 +691,8 @@ export class DatatableComponent implements OnInit, AfterViewInit, DoCheck {
   innerWidth: number;
   pageSize: number;
   bodyHeight: number;
-  rowCount: number;
+  rowCount: number = 0;
+  columnCount: number = 0;
   offsetX: number = 0;
   rowDiffer: IterableDiffer;
   _count: number = 0;

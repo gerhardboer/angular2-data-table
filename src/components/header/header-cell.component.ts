@@ -2,20 +2,21 @@ import {
   Component, Input, EventEmitter, Output, HostBinding
 } from '@angular/core';
 
-import { SortDirection, SortType, SelectionType } from '../../types';
-import { nextSortDir } from '../../utils';
+import {SortDirection, SortType, SelectionType} from '../../types';
+import {nextSortDir} from '../../utils';
 
 @Component({
   selector: 'datatable-header-cell',
   template: `
-    <div role="columnheader">
+    <div role="columnheader"
+         [attr.aria-sort]="ariaSortDir">
       <label
-        *ngIf="isCheckboxable" 
+        *ngIf="isCheckboxable"
         class="datatable-checkbox">
-        <input 
+        <input
           type="checkbox"
           [attr.checked]="allRowsSelected"
-          (change)="select.emit(!allRowsSelected)" 
+          (change)="select.emit(!allRowsSelected)"
         />
       </label>
       <span class="datatable-header-cell-wrapper">
@@ -51,6 +52,9 @@ export class DataTableHeaderCellComponent {
   @Input() allRowsSelected: boolean;
   @Input() selectionType: SelectionType;
 
+  @Input() aria: { [key: string]: string };
+  ariaSortDir: SortDirection;
+
   @HostBinding('style.height.px')
   @Input() headerHeight: number;
 
@@ -71,13 +75,14 @@ export class DataTableHeaderCellComponent {
   get columnCssClasses(): any {
     let cls = 'datatable-header-cell';
 
-    if(this.column.sortable) cls += ' sortable';
-    if(this.column.resizeable) cls += ' resizeable';
-    if(this.column.cssClasses) cls += ' ' + this.column.cssClasses;
+    if (this.column.sortable) cls += ' sortable';
+    if (this.column.resizeable) cls += ' resizeable';
+    if (this.column.cssClasses) cls += ' ' + this.column.cssClasses;
 
     const sortDir = this.sortDir;
-    if(sortDir) {
+    if (sortDir) {
       cls += ` sort-active sort-${sortDir}`;
+      this.ariaSortDir = this.aria[sortDir]
     }
 
     return cls;
@@ -105,7 +110,7 @@ export class DataTableHeaderCellComponent {
 
   get isCheckboxable(): boolean {
     return this.column.checkboxable &&
-      this.column.headerCheckboxable && 
+      this.column.headerCheckboxable &&
       this.selectionType === SelectionType.checkbox;
   }
 
@@ -115,17 +120,17 @@ export class DataTableHeaderCellComponent {
   _sorts: any[];
 
   calcSortDir(sorts: any[]): any {
-    if(sorts && this.column) {
+    if (sorts && this.column) {
       const sort = sorts.find((s: any) => {
         return s.prop === this.column.prop;
       });
 
-      if(sort) return sort.dir;
+      if (sort) return sort.dir;
     }
   }
 
   onSort(): void {
-    if(!this.column.sortable) return;
+    if (!this.column.sortable) return;
 
     const newValue = nextSortDir(this.sortType, this.sortDir);
     this.sort.emit({
@@ -136,9 +141,9 @@ export class DataTableHeaderCellComponent {
   }
 
   calcSortClass(sortDir): string {
-    if(sortDir === SortDirection.asc) {
+    if (sortDir === SortDirection.asc) {
       return `sort-btn sort-asc ${this.sortAscendingIcon}`;
-    } else if(sortDir === SortDirection.desc) {
+    } else if (sortDir === SortDirection.desc) {
       return `sort-btn sort-desc ${this.sortDescendingIcon}`;
     } else {
       return `sort-btn`;

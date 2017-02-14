@@ -1,9 +1,9 @@
 import {
   Component, Output, EventEmitter, Input, HostBinding
 } from '@angular/core';
-import { SortType, SelectionType } from '../../types';
-import { columnsByPin, columnGroupWidths, columnsByPinArr, translateXY } from '../../utils';
-import { DataTableColumnDirective } from '../columns';
+import {SortType, SelectionType} from '../../types';
+import {columnsByPin, columnGroupWidths, columnsByPinArr, translateXY} from '../../utils';
+import {DataTableColumnDirective} from '../columns';
 
 @Component({
   selector: 'datatable-header',
@@ -12,14 +12,14 @@ import { DataTableColumnDirective } from '../columns';
       orderable
       (reorder)="onColumnReordered($event)"
       [style.width.px]="columnGroupWidths.total"
-      class="datatable-header-inner"
-      role="row">
+      class="datatable-header-inner">
       <div
         *ngFor="let colGroup of columnsByPin; trackBy: trackByGroups"
         [class]="'datatable-row-' + colGroup.type"
         [ngStyle]="stylesByGroup(colGroup.type)">
         <datatable-header-cell
           *ngFor="let column of colGroup.columns; trackBy: columnTrackingFn"
+          [aria]="aria.sorts"
           resizeable
           [resizeEnabled]="column.resizeable"
           (resize)="onColumnResized($event, column)"
@@ -60,9 +60,11 @@ export class DataTableHeaderComponent {
   @Input() selectionType: SelectionType;
   @Input() reorderable: boolean;
 
+  @Input() aria: { [key: string]: string };
+
   @HostBinding('style.height')
   @Input() set headerHeight(val: any) {
-    if(val !== 'auto') { 
+    if (val !== 'auto') {
       this._headerHeight = `${val}px`;
     } else {
       this._headerHeight = val;
@@ -81,8 +83,8 @@ export class DataTableHeaderComponent {
     this.columnGroupWidths = columnGroupWidths(colsByPin, val);
   }
 
-  get columns(): any[] { 
-    return this._columns; 
+  get columns(): any[] {
+    return this._columns;
   }
 
   @Output() sort: EventEmitter<any> = new EventEmitter();
@@ -97,7 +99,7 @@ export class DataTableHeaderComponent {
 
   @HostBinding('style.width')
   get headerWidth(): string {
-    if(this.scrollbarH) {
+    if (this.scrollbarH) {
       return this.innerWidth + 'px';
     }
 
@@ -115,7 +117,7 @@ export class DataTableHeaderComponent {
   onColumnResized(width: number, column: DataTableColumnDirective): void {
     if (width <= column.minWidth) {
       width = column.minWidth;
-    } else if(width >= column.maxWidth) {
+    } else if (width >= column.maxWidth) {
       width = column.maxWidth;
     }
 
@@ -126,7 +128,7 @@ export class DataTableHeaderComponent {
     });
   }
 
-  onColumnReordered({ prevIndex, newIndex, model }: any): void {
+  onColumnReordered({prevIndex, newIndex, model}: any): void {
     this.reorder.emit({
       column: model,
       prevValue: prevIndex,
@@ -134,7 +136,7 @@ export class DataTableHeaderComponent {
     });
   }
 
-  onSort({ column, prevValue, newValue }: any): void {
+  onSort({column, prevValue, newValue}: any): void {
     const sorts = this.calcNewSorts(column, prevValue, newValue);
     this.sort.emit({
       sorts,
@@ -149,7 +151,7 @@ export class DataTableHeaderComponent {
 
     let sorts = this.sorts.map((s, i) => {
       s = Object.assign({}, s);
-      if(s.prop === column.prop) idx = i;
+      if (s.prop === column.prop) idx = i;
       return s;
     });
 
@@ -162,7 +164,7 @@ export class DataTableHeaderComponent {
         sorts.splice(0, this.sorts.length);
       }
 
-      sorts.push({ dir: newValue, prop: column.prop });
+      sorts.push({dir: newValue, prop: column.prop});
     }
 
     return sorts;
@@ -176,9 +178,9 @@ export class DataTableHeaderComponent {
       width: `${widths[group]}px`
     };
 
-    if(group === 'center') {
+    if (group === 'center') {
       translateXY(styles, offsetX * -1, 0);
-    } else if(group === 'right') {
+    } else if (group === 'right') {
       const totalDiff = widths.total - this.innerWidth;
       const offset = totalDiff * -1;
       translateXY(styles, offset, 0);

@@ -28,7 +28,7 @@ import {
         [class.active]="pg.number === page">
         <a
           href="javascript:void(0)"
-          [attr.aria-label]="pg.number"
+          [attr.aria-label]="aria.page + ' ' + pg.number"
           (click)="selectPage(pg.number)">
           {{pg.text}}
         </a>

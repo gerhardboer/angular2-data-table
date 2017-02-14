@@ -9,7 +9,6 @@ import { ScrollerComponent } from './scroller.component';
   selector: 'datatable-body',
   template: `
     <datatable-selection
-      role="row"
       #selector
       [selected]="selected"
       [rows]="temp"
@@ -31,6 +30,7 @@ import { ScrollerComponent } from './scroller.component';
         (scroll)="onBodyScroll($event)">
         <datatable-row-wrapper
           *ngFor="let row of temp; let i = index; trackBy: rowTrackingFn;"
+          [attr.aria-rowindex]="i"
           [ngStyle]="getRowsStyles(row)"
           [rowDetail]="rowDetail"
           [detailRowHeight]="detailRowHeight"
